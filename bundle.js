@@ -15,7 +15,7 @@ const __dirname = path.dirname(p);
 
 const projectFolder = new LocalDrive(path.resolve(__dirname, "./"));
 
-await pack("./index.js", "./dist/index.min.js", {
+const result = await pack("./index.js", "./dist/index.min.js", {
     plugins: [
         rollupFromSourcePlugin(projectFolder),
         commonjs(),
