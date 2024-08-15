@@ -1,7 +1,7 @@
 # rpc-async-webworker-with-transfer
 
 Two-way RPC between a web worker and the main thread using transferable objects and streams. Streams
-are available as [streamx](https://github.com/mafintosh/streamx) duplex streams on either end.
+are available as [streamx](https://github.com/mafintosh/streamx) duplex or readable streams on either end.
 
 See [rpc-async](https://github.com/mablay/rpc-async) api for other implementations and usages.
 
