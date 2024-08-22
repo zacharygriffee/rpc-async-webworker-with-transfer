@@ -1,9 +1,8 @@
 # rpc-async-webworker-with-transfer
 
-Two-way RPC between a web worker and the main thread using transferable objects and streams. Streams
-are available as [streamx](https://github.com/mafintosh/streamx) duplex or readable streams on either end.
+Two-way RPC between a web worker and the main thread using transferable objects and streams. Streams are available as [streamx](https://github.com/mafintosh/streamx) duplex or readable streams on either end.
 
-See [rpc-async](https://github.com/mablay/rpc-async) api for other implementations and usages.
+See [rpc-async](https://github.com/mablay/rpc-async) API for other implementations and usages.
 
 Package is about 60kb minified.
 
@@ -15,12 +14,12 @@ npm install rpc-async-webworker-with-transfer --save
 
 ## Example
 
-``` ecmascript 6
+```ecmascript 6
 import { rpcFromWebWorkerWithTransfer } from "rpc-async-webworker-with-transfer";
 import duplexThrough from "duplex-through";
 import b4a from "b4a";
 const worker = new WebWorker(workerUrl);
-const [ourSideDuplex,theirSideDuplex] = duplexThrough();
+const [ourSideDuplex, theirSideDuplex] = duplexThrough();
 
 // main thread
 const rpc = rpcFromWebWorkerWithTransfer(worker);
@@ -52,9 +51,9 @@ ourSideDuplex.on("data", data => {
 rpc.notify.largeTextTransfer(b4a.allocUnsafe(10000));
 
 ```
+
+## [More Examples](./examples.md)
+
 ---
 
 Distributed under the MIT license. See ``LICENSE`` for more information.
-
-
-
