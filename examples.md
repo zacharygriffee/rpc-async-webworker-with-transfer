@@ -95,7 +95,7 @@ rpc.expose({
     });
 
     // Create another stream using duplexThrough
-    const [anotherStream] = duplexThrough();
+    const [anotherStream, localStream] = duplexThrough();
     
     setImmediate(() => anotherStream.write('Data from worker'));
     

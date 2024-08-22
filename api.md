@@ -84,7 +84,7 @@ Creates a pool of workers.
 
 #### Parameters
 - `WorkerConstructor`: `Function` - A function that returns a new Web Worker instance.
-- `poolSize`: `Number` (optional) - The number of workers to create. Defaults to half of the hardware concurrency or a maximum of 4 workers.
+- `poolSize`: `Number` (optional) - The number of workers to create. Defaults to half of the hardware concurrency or a minimum of 4 workers.
 
 ### `addTask(method, args, type)`
 
