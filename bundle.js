@@ -2,9 +2,11 @@ import {
     pack,
     rollupFromJsdelivr,
     rollupFromSourcePlugin,
+    setRollup
 } from "bring-your-own-storage-utilities/deploy";
 import commonjs from "@rollup/plugin-commonjs";
 import {fileURLToPath} from "bring-your-own-storage-utilities/find";
+// import * as ROLLUP from "rollup";
 import path from "node:path";
 
 import LocalDrive from "localdrive";
@@ -12,7 +14,7 @@ import terser from "@rollup/plugin-terser";
 
 const p = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(p);
-
+// await setRollup(ROLLUP)
 const projectFolder = new LocalDrive(path.resolve(__dirname, "./"));
 
 const result = await pack("./index.js", "./dist/index.min.js", {

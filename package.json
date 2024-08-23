@@ -1,6 +1,6 @@
 {
   "name": "rpc-async-webworker-with-transfer",
-  "version": "0.2.51",
+  "version": "0.2.52",
   "description": "Two way RPC between a web worker and the main thread using transferable objects and streams.",
   "type": "module",
   "browser": "dist/index.min.js",
@@ -21,10 +21,11 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^26.0.1",
     "@rollup/plugin-terser": "^0.4.4",
-    "bring-your-own-storage-utilities": "^0.0.1332",
+    "bring-your-own-storage-utilities": "^0.0.22",
     "brittle": "^3.6.1",
     "duplex-through": "^1.0.2",
     "eventemitter3": "^5.0.1",
-    "localdrive": "^1.11.4"
+    "localdrive": "^1.11.4",
+    "rollup": "^4.21.0"
   }
 }
