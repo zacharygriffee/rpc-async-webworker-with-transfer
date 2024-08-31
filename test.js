@@ -76,8 +76,42 @@ export function doTest() {
             t.is(b4a.toString(result), "abc");
         });
     });
-}
 
+    test("Error handling test", async t => {
+        await useWorker(async ({rpc}) => {
+            try {
+                const result = await rpc.request.errorTest("Intentional error for testing");
+                t.fail("Expected error to be thrown");
+            } catch (e) {
+                t.ok(e.message.includes("Intentional error for testing"));
+            }
+        });
+    });
+
+    test("Custom Error handling test", async t => {
+        await useWorker(async ({rpc}) => {
+            try {
+                const result = await rpc.request.customErrorTest("Intentional error for testing");
+                t.fail("Expected error to be thrown");
+            } catch (e) {
+                t.ok(e.message.includes("Intentional error for testing"));
+            }
+        });
+    });
+
+    // solo("Error inside stream", async t => {
+    //     await useWorker(async ({rpc}) => {
+    //         try {
+    //             const stream = await rpc.request.errorInStreamTest();
+    //             const error = await new Promise(resolve => stream.once("error", resolve));
+    //             debugger;
+    //             t.fail("Expected error to be thrown");
+    //         } catch (e) {
+    //             t.ok(e.message.includes("Intentional error for testing"));
+    //         }
+    //     });
+    // });
+}
 
 
 async function useWorker(code, cb) {
@@ -111,8 +145,31 @@ async function useWorker(code, cb) {
             },
             async isItReadable(stream) {
                 return isReadable(stream);
+            },
+            async errorTest(message) {
+                throw new Error(message);
+            },
+            async customErrorTest(message) {
+                throw new CustomError(message);
+            },
+            async errorInStreamTest() {
+                const [local, remote] = duplexThrough();
+                local.on("data", data => {
+                    console.log(data);
+                });
+                setTimeout(() => {
+                   local.emit("error", new Error("stream error"));
+                });
+                return remote;
             }
         });
+        
+        class CustomError extends Error {
+            constructor(message) {
+                super(message);
+                this.wow = message;
+            }
+        }
         
         ${code}
         ${isDuplex}
