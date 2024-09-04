@@ -1,6 +1,4 @@
 import {solo, test} from "brittle";
-import { rpcFromWebWorkerWithTransfer } from "../index.js";
-import { MockWorker } from "./fixtures/MockWorker.js";
 import {useWorker} from "./fixtures/useWorker.js"; // #file:MockWorker.js
 
 test("Function transfer and execution", async t => {
@@ -76,4 +74,3 @@ test("Return a callback function", async t => {
         }
     });
 });
-
