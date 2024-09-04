@@ -6,8 +6,8 @@ import { isReadable } from "../../lib/utils/isReadable.js";
 import b4a from "b4a";
 import {isWritable} from "../../lib/utils/isWritable.js";
 
-async function useWorker(cb) {
-    const funcs = {
+async function useWorker(cb, funcs) {
+    funcs ||= {
         add(a, b) {
             return a + b;
         },
@@ -78,6 +78,9 @@ async function useWorker(cb) {
                 local.destroy(new Error("stream error"));
             }, 100);
             return remote;
+        },
+        async callbackFunction(cb) {
+            return cb.request(1, 2);
         }
     };
 
