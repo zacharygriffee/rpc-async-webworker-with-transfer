@@ -7,6 +7,10 @@ import { duplexThrough } from "duplex-through-with-error-handling";
 import b4a from "b4a";
 import c from "compact-encoding";
 
+function typedArrayToBuffer(array) {
+    return array.buffer.slice(array.byteOffset, array.byteLength + array.byteOffset);
+}
+
 // Direct streamx-webstreams handling
 test("direct streamx-webstreams handling", async _t => {
     const t = _t.test();
@@ -41,13 +45,29 @@ test("direct streamx-webstreams handling", async _t => {
     await t;
 });
 
+
+test("Transfer falsy values", async t => {
+    const a_n = asTransferable(null, c.any);
+    const b_n = fromTransferable(a_n, c.any); // No array wrapping anymore
+    t.is(b_n, null);
+
+    const a_u = asTransferable(undefined, c.any);
+    const b_u = fromTransferable(a_u, c.any); // No array wrapping
+    t.is(b_u, undefined);
+
+    const a_f = asTransferable(false, c.any);
+    const b_f = fromTransferable(a_f, c.any); // No array wrapping
+    t.is(b_f, false);
+});
+
+
 // Test for Buffer
 test("asTransferable and fromTransferable with Buffer", async t => {
     const buffer = b4a.from("hello world");
     const encoding = c.any;
 
     const transferable = asTransferable(buffer, encoding);
-    const result = fromTransferable(transferable[0], encoding);
+    const result = fromTransferable(transferable, encoding); // No need for array unpacking
 
     t.alike(result, buffer, "Buffer should be transferred and reconstructed correctly");
 });
@@ -58,7 +78,7 @@ test("asTransferable and fromTransferable with Duplex stream", async t => {
     const encoding = c.any;
 
     const transferable = asTransferable(duplex, encoding);
-    const reconstructedDuplex = fromTransferable(transferable, encoding);
+    const reconstructedDuplex = fromTransferable(transferable, encoding); // No need for array unpacking
 
     t.ok(reconstructedDuplex instanceof Duplex, "Duplex stream should be transferred and reconstructed correctly");
 
@@ -70,7 +90,6 @@ test("asTransferable and fromTransferable with Duplex stream", async t => {
     });
 });
 
-// Test for Readable Stream
 test("asTransferable and fromTransferable with Readable stream", async _t => {
     const t = _t.test();
     t.plan(4);
@@ -86,7 +105,7 @@ test("asTransferable and fromTransferable with Readable stream", async _t => {
 
     const transferable = asTransferable(readable, encoding);
 
-    const [reconstructedReadable] = fromTransferable(transferable, encoding);
+    const reconstructedReadable = fromTransferable(transferable, encoding); // No array wrapping
 
     t.ok(reconstructedReadable instanceof Readable, "Readable stream should be transferred and reconstructed correctly");
 
@@ -118,7 +137,7 @@ test("asTransferable and fromTransferable with plain object", async t => {
     const encoding = c.any;
 
     const transferable = asTransferable(object, encoding);
-    const result = fromTransferable(transferable[0], encoding);
+    const result = fromTransferable(transferable, encoding);
 
     t.alike(result, object, "Plain object should be transferred and reconstructed correctly");
 });

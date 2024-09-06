@@ -8,7 +8,7 @@ import {isWritable} from "../../lib/utils/isWritable.js";
 
 async function useWorker(cb, funcs) {
     funcs ||= {
-        add(a, b) {
+        add(a, b, x) {
             return a + b;
         },
         echo(...args) {
@@ -18,7 +18,7 @@ async function useWorker(cb, funcs) {
             stream.write(b4a.from(sendThis));
             setTimeout(() => {
                 stream.end();
-            }, 10);
+            }, 12);
             return null;
         },
         async streamEcho(stream, sendThis) {
@@ -80,7 +80,7 @@ async function useWorker(cb, funcs) {
             return remote;
         },
         async callbackFunction(cb) {
-            return cb.request(1, 2);
+            return cb(1, 2);
         }
     };
 

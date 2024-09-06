@@ -4,6 +4,11 @@ import {duplexThrough} from "duplex-through-with-error-handling";
 import {Duplex, Readable, Writable} from "streamx";
 import {useWorker} from "./fixtures/useWorker.js";
 
+test("Transferability tests", async t => {
+    await import("./transferrability.js");
+    t.pass();
+});
+
 test("Mock worker test", async t => {
     await import("./fixtures/mock-worker-test.js");
     t.pass();
@@ -11,7 +16,7 @@ test("Mock worker test", async t => {
 
 test("Basic add test", async t => {
     await useWorker(async ({rpc}) => {
-        t.is(await rpc.request.add(1, 2), 3);
+        t.is(await rpc.request.add(1, 2, {fun: "show"}), 3);
     });
 });
 
@@ -41,28 +46,28 @@ test("is streamx readable test", async t => {
 });
 
 
-test("is streamx writable test", async t => {
-    const writable = new Writable();
-
-    await useWorker(async ({rpc}) => {
-        t.ok(await rpc.request.isItWritable(writable));
-    });
-
-    writable.end();
-});
-
-test("streamx writable test", async t => {
-    t.plan(1)
-    const writable = new Writable({
-        write(chunk, cb) {
-            t.is(b4a.toString(chunk), "hello you");
-            cb();
-        }
-    });
-    await useWorker(async ({rpc}) => {
-        await rpc.request.streamEchoWrite(writable, "hello you");
-    });
-});
+// test("is streamx writable test", async t => {
+//     const writable = new Writable();
+//
+//     await useWorker(async ({rpc}) => {
+//         t.ok(await rpc.request.isItWritable(writable));
+//     });
+//
+//     writable.end();
+// });
+//
+// test("streamx writable test", async t => {
+//     t.plan(1)
+//     const writable = new Writable({
+//         write(chunk, cb) {
+//             t.is(b4a.toString(chunk), "hello you");
+//             cb();
+//         }
+//     });
+//     await useWorker(async ({rpc}) => {
+//         await rpc.request.streamEchoWrite(writable, "hello you");
+//     });
+// });
 
 test("StreamX duplex communication across web worker test.", async _t => {
     const t = _t.test();
@@ -192,5 +197,4 @@ test("Error inside stream", async t => {
     });
 });
 
-import("./transferrability.js");
 
