@@ -4,7 +4,7 @@ Two-way RPC between a web worker and the main thread using transferable objects 
 
 See [rpc-async](https://github.com/mablay/rpc-async) API for other implementations and usages.
 
-Package is about 60kb minified.
+Package is about 40kb minified.
 
 ## Installation
 
